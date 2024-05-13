@@ -1,4 +1,5 @@
 public interface Qualified {
-    public Quality getQuality();
-    public void setQuality(Quality quality);
+
+    Quality getQuality();
+    void setQuality(Quality quality);
 }
