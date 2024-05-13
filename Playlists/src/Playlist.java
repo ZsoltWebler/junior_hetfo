@@ -3,54 +3,51 @@ import java.util.List;
 import java.util.Objects;
 
 public class Playlist {
-    private final List<Song> songs;
 
-    public Playlist(List<Song> songs) {
-        this.songs = songs;
+    private final List<Song> songList;
+
+    public Playlist(List<Song> songList) {
+        this.songList = songList;
     }
 
-    public void addSong(Song song) {
-        songs.add(song);
+    public boolean addSong(Song song) {
+        return songList.add(song);
     }
 
-    public void removeSong(Song remove) {
-        for (Song song : songs) {
-            if (song.equals(remove)) {
-                songs.remove(remove);
+    public boolean removeSong(Song song) {
+        return songList.remove(song);
+    }
+
+    public List<Song> findByLengthGreaterThan(int minute) {
+
+        List<Song> songs = new ArrayList<>();
+
+        for (Song song : songList) {
+            if (song.getLengthInSeconds() > minute * 60L) {
+                songs.add(song);
             }
         }
+        return songs;
     }
 
-    public List<Song> findByLengthGreaterThan(int mins) {
-        long lenghtInSeconds = mins * 60;
-        List<Song> songsLonger = new ArrayList<>();
-        for (Song song : songs) {
-            if (song.getLengthInSeconds() > lenghtInSeconds) {
-                songsLonger.add(song);
-            }
-        }
-        return songsLonger;
-    }
+    public void totalPlayTime() {
 
-    public void totalPlaytime() {
-        long totalLenght = 0;
-        for (Song song : songs) {
-            totalLenght += song.getLengthInSeconds();
+        long totalPlayTimeInSec = 0;
+
+        for (Song song : songList) {
+            totalPlayTimeInSec += song.getLengthInSeconds();
         }
-        long minuteCount = 0;
-        for (long i = 0; i == totalLenght; i++) {
-            if(i%60 == 0){
-                minuteCount += 1;
-            }
-        }
-        long remainingSeconds = totalLenght - minuteCount*60;
-        System.out.println("Total playtime: "+ minuteCount +" mins, " + remainingSeconds + "seconds");
+
+        long minute = totalPlayTimeInSec / 60;
+        long seconds = totalPlayTimeInSec - (minute * 60L);
+
+        System.out.println("TotalPlayTime: " + minute + " min, " + seconds + " seconds.");
     }
 
     @Override
     public String toString() {
         return "Playlist{" +
-                "songs=" + songs +
+                "songList=" + songList +
                 '}';
     }
 
@@ -59,11 +56,11 @@ public class Playlist {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Playlist playlist = (Playlist) o;
-        return Objects.equals(songs, playlist.songs);
+        return Objects.equals(songList, playlist.songList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(songs);
+        return Objects.hash(songList);
     }
 }

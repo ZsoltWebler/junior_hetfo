@@ -1,9 +1,24 @@
 import java.util.Objects;
 
 public class Song {
-    private final String name;
-    private final long lengthInSeconds;
-    private final String artist;
+
+    private String name;
+    private long lengthInSeconds;
+    private String artist;
+
+
+    public Song(String name, long lengthInSeconds, String artist) {
+        checkParameters(name, lengthInSeconds, artist);
+        this.name = name;
+        this.lengthInSeconds = lengthInSeconds;
+        this.artist = artist;
+    }
+
+    private void checkParameters(String name, long lengthInSeconds, String artist) {
+        if ((name == null || name.isBlank()) || (artist == null || artist.isBlank()) || lengthInSeconds <= 0) {
+            throw new RuntimeException();
+        }
+    }
 
     public String getName() {
         return name;
@@ -17,13 +32,13 @@ public class Song {
         return artist;
     }
 
-    public Song(String name, long lengthInSeconds, String artist) {
-        if (name == null || artist == null || lengthInSeconds < 1) {
-            throw new RuntimeException();
-        }
-        this.name = name;
-        this.lengthInSeconds = lengthInSeconds;
-        this.artist = artist;
+    @Override
+    public String toString() {
+        return "Song{" +
+                "name='" + name + '\'' +
+                ", lengthInSeconds=" + lengthInSeconds +
+                ", artist='" + artist + '\'' +
+                '}';
     }
 
     @Override
@@ -37,14 +52,5 @@ public class Song {
     @Override
     public int hashCode() {
         return Objects.hash(name, lengthInSeconds, artist);
-    }
-
-    @Override
-    public String toString() {
-        return "Song{" +
-                "name='" + name + '\'' +
-                ", lengthInSeconds=" + lengthInSeconds +
-                ", artist='" + artist + '\'' +
-                '}';
     }
 }
