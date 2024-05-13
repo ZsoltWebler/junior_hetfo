@@ -32,6 +32,21 @@ public class PhotoCollection {
 
     }
 
+    public void starPhoto(String name, Quality quality) {
+
+        for (Photo photo : photoList) {
+
+            if (photo.getName().equals(name)) {
+                photo.setQuality(quality);
+                return;
+            }
+
+        }
+
+        throw new PhotoNotFoundException();
+
+    }
+
     public int numberOfStars() {
 
         int allStarCount = 0;

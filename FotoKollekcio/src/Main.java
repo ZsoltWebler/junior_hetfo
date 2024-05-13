@@ -11,8 +11,14 @@ public class Main {
 
 
         photoCollection.listPhotos();
+        System.out.println();
+        photoCollection.starPhoto("Mátra",Quality.TWO_STAR);
+        photoCollection.listPhotos();
 
         System.out.println(photoCollection.numberOfStars());
+
+        photoCollection.starPhoto("Körös",Quality.TWO_STAR);
+
 
     }
 }
