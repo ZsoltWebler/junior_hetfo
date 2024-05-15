@@ -7,6 +7,11 @@ public class Main {
         System.out.println(isPalindrome("amama"));
         occurences("almakortealmabananalmasajt", "alma");
         reverseString("alma");
+        longestCommonPrefix(new String[]{
+                "alma",
+                "alakzat",
+                "alap"
+        });
     }
 
     public static boolean isPalindrome(String s) {
@@ -25,18 +30,38 @@ public class Main {
     public static void occurences(String s, String subString) {
         int count = 0;
         for (int i = 0; i < s.length() - 2 - subString.length(); i++) {
-            if(s.substring(i,i+subString.length()).equals(subString)){
-                count +=1;
+            if (s.substring(i, i + subString.length()).equals(subString)) {
+                count += 1;
             }
         }
         System.out.println(count);
     }
 
-    public static String reverseString(String s){
+    public static String reverseString(String s) {
         String reverse = "";
-        for(int i = s.length()-1; i>=0;i--){
+        for (int i = s.length() - 1; i >= 0; i--) {
             reverse += s.charAt(i);
         }
         return reverse;
     }
+
+    public static String longestCommonPrefix(String[] s) {
+        String prefix = "";
+        String longestCommonPrefix = "";
+        for (String string : s) {
+            if (prefix.equals("")) {
+                prefix = string;
+            } else {
+                for (int i = 0; i < string.length(); i++) {
+                    if(i < prefix.length()){
+                        if(prefix.charAt(i) == string.charAt(i)){
+                            longestCommonPrefix += string.charAt(i);
+                        }
+                    }
+                }
+            }
+        }
+        return longestCommonPrefix;
+    }
+
 }
