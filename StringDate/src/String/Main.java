@@ -1,18 +1,12 @@
 package String;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(isPalindrome2("alma"));
-        System.out.println(isPalindrome2("gorog"));
 
-        System.out.println(reverse("ALAKZAT"));
-
-        longestCommonPrefix3(new ArrayList<>(List.of("ALAKZAT", "ALMA", "ALKANTARA")));
+        System.out.println(isIsomorphic("aab", "xxy"));
+        System.out.println(isIsomorphic("aab", "xyy"));
 
     }
 
@@ -79,8 +73,8 @@ public class Main {
                 prefix = string;
             } else {
                 for (int i = 0; i < string.length(); i++) {
-                    if(i < prefix.length()){
-                        if(prefix.charAt(i) == string.charAt(i)){
+                    if (i < prefix.length()) {
+                        if (prefix.charAt(i) == string.charAt(i)) {
                             longestCommonPrefix += string.charAt(i);
                         }
                     }
@@ -130,5 +124,50 @@ public class Main {
             return true;
         }
         return false;
+    }
+
+    public static String caesarCode(String message, int offset) {
+        char[] chars = message.toUpperCase().toCharArray();
+        String shifted = "";
+
+        for (Character c : chars) {
+            char tmp = (char) ((((c + offset) - 65) % 26) + 65);
+            shifted += tmp;
+        }
+
+        return shifted;
+
+    }
+
+    public static boolean isAnagram(String s1, String s2) {
+        char[] s1Chars = s1.toCharArray();
+        char[] s2Chars = s2.toCharArray();
+        Arrays.sort(s1Chars);
+        Arrays.sort(s2Chars);
+
+        return Arrays.equals(s1Chars, s2Chars);
+
+    }
+
+    public static boolean isIsomorphic(String s1, String s2) {
+
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+
+        Map<Character,Character> projections = new HashMap<>();
+
+        for (int i = 0; i < s1.length(); i++) {
+            char c = s1.charAt(i);
+
+            if(projections.containsKey(c)){
+                if(s2.charAt(i) != projections.get(c)){
+                    return false;
+                }
+            }else {
+                projections.put(c,s2.charAt(i));
+            }
+        }
+        return true;
     }
 }
