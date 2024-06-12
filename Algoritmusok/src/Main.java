@@ -45,4 +45,10 @@ public class Main {
 
         return new String[1];
     }
+
+    public static String[] join(String[] words){
+
+
+        return new String[]{"egyesített_szó","átfedő_halmaz"};
+    }
 }
