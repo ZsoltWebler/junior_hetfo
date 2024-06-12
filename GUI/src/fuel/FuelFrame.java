@@ -102,9 +102,8 @@ public class FuelFrame extends JFrame {
 
 		JButton btnNewButton_1 = new JButton("Insert record");
 		btnNewButton_1.addActionListener(e -> {
-			carEmissionInfos.add(new CarEmissionInfo("TEST", "TEST", Double.NaN, FuelType.UNKNOWN, 0));
-			table.setModel(new CarEmissionInfoModel(List.copyOf(carEmissionInfos)));
-			System.out.println(carEmissionInfos.size());
+			InsertRecordDialog dialog = new InsertRecordDialog(this);
+			dialog.setVisible(true);
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.anchor = GridBagConstraints.EAST;
@@ -112,6 +111,11 @@ public class FuelFrame extends JFrame {
 		gbc_btnNewButton_1.gridx = 1;
 		gbc_btnNewButton_1.gridy = 0;
 		panel.add(btnNewButton_1, gbc_btnNewButton_1);
+	}
+	
+	public void insertRecord(CarEmissionInfo carEmissionInfo) {
+		carEmissionInfos.add(carEmissionInfo);
+		table.setModel(new CarEmissionInfoModel(List.copyOf(carEmissionInfos)));
 	}
 
 	private List<CarEmissionInfo> readModel(File inputFile) {
