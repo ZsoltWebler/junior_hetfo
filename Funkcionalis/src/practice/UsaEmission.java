@@ -11,8 +11,10 @@ public class UsaEmission {
         List<EmissionRecord> recordList = readModel();
 
         System.out.println();
-        mostEmitterSectorByStateAndYear(2005, "Alabama", recordList);
-        mostEmitterStateByYear(2006,recordList);
+       // mostEmitterSectorByStateAndYear(2005, "Alabama", recordList);
+       //emissionMixByYear(2006,recordList);
+
+        mostEmitterFuelNameByState(recordList);
     }
 
     private static List<EmissionRecord> readModel() {
@@ -60,6 +62,70 @@ public class UsaEmission {
                 .stream()
                 .max(Comparator.comparingDouble(Map.Entry::getValue))
                 .ifPresent(entry -> System.out.println(entry.getKey() + " - " + entry.getValue()));
+    }
+
+
+    //Írja ki a konzolra, hogy évenként melyik állam bocsájtotta ki a legtöbb széndioxidot és mennyi volt az.
+    private static void mostEmitterState(List<EmissionRecord> recordList){
+
+        recordList
+                .stream()
+                .collect(Collectors.groupingBy(EmissionRecord::getYear))
+                .forEach((key, value) -> {
+                    System.out.print(key+"\n\t");
+                    mostEmitterStateByYear(key, recordList);
+                });
+
+        recordList
+                .stream()
+                .collect(Collectors.groupingBy(EmissionRecord::getYear))
+                .forEach((key, value) -> {
+
+                    value
+                            .stream()
+                            .filter(emissionRecord -> !emissionRecord.getStateName().equals("United States"))
+                            .collect(Collectors.groupingBy(EmissionRecord::getStateName, Collectors.summingDouble(EmissionRecord::getValue)))
+                            .entrySet()
+                            .stream()
+                            .max(Comparator.comparingDouble(Map.Entry::getValue))
+                            .ifPresent(entry -> System.out.println(key + " - "+entry.getKey() + " - " + entry.getValue()));
+                });
+    }
+
+    // Írja ki a konzolra, hogy az adott évben az USA üzemanyag típusonként csoportosítva mennyi széndioxidot juttatott a levegőbe.
+    private static void  emissionMixByYear(int year, List<EmissionRecord> recordList){
+        recordList
+                .stream()
+                .filter(emissionRecord -> emissionRecord.getYear() == year && !emissionRecord.getStateName().equals("United States"))
+                .collect(Collectors.groupingBy(EmissionRecord::getFuelName, Collectors.summingDouble(EmissionRecord::getValue)))
+                .forEach((fuel, emission) -> System.out.println(year+" - "+fuel + " - " + emission));
+
+    }
+    //Írja ki a konzolra, hogy az USA üzemanyag típusonként csoportosítva mennyi széndioxidot juttatott a levegőbe.
+    private static void  emissionMix(List<EmissionRecord> recordList){
+        recordList
+                .stream()
+                .filter(emissionRecord ->  !emissionRecord.getStateName().equals("United States"))
+                .collect(Collectors.groupingBy(EmissionRecord::getFuelName, Collectors.summingDouble(EmissionRecord::getValue)))
+                .forEach((fuel, emission) -> System.out.println(fuel + " - " + emission));
+    }
+    // Írja ki a konzolra, minden államhoz, hogy melyik üzemanyag típus juttatta a legtöbb széndioxidot a levegőbe az államban.
+    private static void  mostEmitterFuelNameByState(List<EmissionRecord> recordList){
+        recordList
+                .stream()
+                .filter(emissionRecord ->!emissionRecord.getStateName().equals("United States"))
+                .collect(Collectors.groupingBy(EmissionRecord::getStateName))
+                .forEach((state, emissionRecords) ->{
+                    emissionRecords
+                            .stream()
+                            .collect(Collectors.groupingBy(EmissionRecord::getFuelName, Collectors.summingDouble(EmissionRecord::getValue)))
+                            .entrySet()
+                            .stream()
+                            .max(Comparator.comparingDouble(Map.Entry::getValue))
+                            .ifPresent(fuelDoubleEntry -> {
+                                System.out.println(state + " - " + fuelDoubleEntry.getKey() + " - " + fuelDoubleEntry.getValue());
+                            });
+                });
     }
 
 }
