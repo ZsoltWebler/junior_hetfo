@@ -9,8 +9,7 @@ public class Homework {
         String s1 = "valami";
         String s2 = "";
 
-        applyRule(str -> str.isEmpty(), s1);
-        applyRule(str -> str.isEmpty(), s2);
+
 
 
         reverseOrder(new ArrayList<>(List.of("a", "b", "c", "d")));
@@ -27,11 +26,8 @@ public class Homework {
     }
 
     //1. Feladat
-    public static void applyRule(StringRule rule, String str) {
+    public static void applyRule( String str) {
 
-
-        String isEmpty = rule.apply(str) ? "" : "nem ";
-        System.out.println("A kapott string " + isEmpty + "üres!");
 
     }
 

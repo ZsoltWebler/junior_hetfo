@@ -1,6 +1,5 @@
 package stream;
 
-import practice.StringRule;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,11 +13,7 @@ public class Main {
 
     }
 
-    public static void applyRule(StringRule rule, String str){
-
-
-        String isEmpty = rule.apply(str) ? "" : "nem ";
-        System.out.println("A kapott string "+isEmpty+"üres!" );
+    public static void applyRule( String str){
 
     }
 }
