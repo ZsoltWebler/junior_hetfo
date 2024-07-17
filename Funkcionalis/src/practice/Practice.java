@@ -25,7 +25,8 @@ public class Practice {
         //feladat_1();
         //feladat_2();
         //feladat_3();
-        feladat_4();
+        //feladat_4();
+        feladat_6();
 
     }
 
@@ -121,5 +122,63 @@ public class Practice {
                 .toList();
 
         System.out.println();
+    }
+
+    //Készíts egy Map<Organization,Long>
+    // adatszerkezetetet, amiben minden organization objektumhoz hozzá rendeled az ott dolgozók számát.
+    public static void feladat_5() {
+
+        //Régi megoldás
+        Map<Organization, Long> employeeCountByOrganization = new HashMap<>();
+
+        for (Employee employee : listOfEmployees) {
+            Organization organization = employee.getOrganization();
+
+            if (!employeeCountByOrganization.containsKey(organization)) {
+                employeeCountByOrganization.put(organization, 0L);
+            }
+            Long currentValue = employeeCountByOrganization.get(organization);
+            employeeCountByOrganization.put(organization, currentValue + 1);
+
+        }
+
+
+        // Új megoldás
+        listOfEmployees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization, Collectors.counting()))
+                .forEach((organization, count) -> System.out.println(organization.getName() + " - " +count));
+
+    }
+
+    //Készíts egy Map<Organization,List<Employee>> adatszerkezetetet,
+    // amiben minden organization objektumhoz hozzá rendeled az ott dolgozókat.
+
+    public static void feladat_6() {
+
+        Map<Organization,List<Employee>> map = new HashMap<>();
+
+        for(Employee employee: listOfEmployees){
+            Organization organization = employee.getOrganization();
+            if(!map.containsKey(organization)){
+                map.put(organization,new ArrayList<>());
+            }
+            map.get(organization).add(employee);
+
+        }
+
+
+        listOfEmployees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .forEach((organization, employees) -> {
+                    System.out.println(organization.getName());
+                    employees.forEach(employee -> System.out.println("\t"+employee.getName()));
+                });
+
+        listOfEmployees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .forEach((organization, a) -> System.out.println(organization.getName() + " : " + a.stream().map(Employee::getName).collect(Collectors.joining(", "))));
     }
 }
