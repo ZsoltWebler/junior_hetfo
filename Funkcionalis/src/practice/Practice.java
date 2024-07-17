@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,7 +19,8 @@ public class Practice {
             new Employee(8, "Parag Agrawal", 300000, new Organization("Twitter", new Country("USA", "US"))),
             new Employee(9, "Tim Cook", 250000, new Organization("Apple", new Country("United Kingdom", "UK"))),
             new Employee(10, "Jony Ive", 50000, new Organization("Apple", new Country("United Kingdom", "UK"))),
-            new Employee(11, "Steve Wozniak", 150000, new Organization("Apple", new Country("United Kingdom", "UK"))));
+            new Employee(11, "Steve Wozniak", 150000, new Organization("Apple", new Country("United Kingdom", "UK"))),
+            new Employee(11, "Steve Ive", 150000, new Organization("Apple", new Country("United Kingdom", "UK"))));
 
 
     public static void main(String[] args) {
@@ -26,7 +28,7 @@ public class Practice {
         //feladat_2();
         //feladat_3();
         //feladat_4();
-        feladat_6();
+        feladat_10();
 
     }
 
@@ -147,7 +149,7 @@ public class Practice {
         listOfEmployees
                 .stream()
                 .collect(Collectors.groupingBy(Employee::getOrganization, Collectors.counting()))
-                .forEach((organization, count) -> System.out.println(organization.getName() + " - " +count));
+                .forEach((organization, count) -> System.out.println(organization.getName() + " - " + count));
 
     }
 
@@ -156,12 +158,12 @@ public class Practice {
 
     public static void feladat_6() {
 
-        Map<Organization,List<Employee>> map = new HashMap<>();
+        Map<Organization, List<Employee>> map = new HashMap<>();
 
-        for(Employee employee: listOfEmployees){
+        for (Employee employee : listOfEmployees) {
             Organization organization = employee.getOrganization();
-            if(!map.containsKey(organization)){
-                map.put(organization,new ArrayList<>());
+            if (!map.containsKey(organization)) {
+                map.put(organization, new ArrayList<>());
             }
             map.get(organization).add(employee);
 
@@ -173,7 +175,7 @@ public class Practice {
                 .collect(Collectors.groupingBy(Employee::getOrganization))
                 .forEach((organization, employees) -> {
                     System.out.println(organization.getName());
-                    employees.forEach(employee -> System.out.println("\t"+employee.getName()));
+                    employees.forEach(employee -> System.out.println("\t" + employee.getName()));
                 });
 
         listOfEmployees
@@ -181,4 +183,81 @@ public class Practice {
                 .collect(Collectors.groupingBy(Employee::getOrganization))
                 .forEach((organization, a) -> System.out.println(organization.getName() + " : " + a.stream().map(Employee::getName).collect(Collectors.joining(", "))));
     }
+
+    //Streamek segítségével add meg az átlag felett kereső alkalmazottak listáját.
+    public static void feladat_7() {
+
+        //Új módszer
+
+        Double averageSalary = listOfEmployees.stream().collect(Collectors.averagingDouble(Employee::getSalary));
+
+        System.out.println("Average salary: " + averageSalary);
+
+        listOfEmployees.stream().filter(employee -> employee.getSalary() > averageSalary).forEach(System.out::println);
+
+
+        //Régi módszer
+        double averageSalary_ = 0;
+
+        for (Employee employee : listOfEmployees) {
+            averageSalary_ += employee.getSalary();
+        }
+
+        averageSalary_ = averageSalary_ / listOfEmployees.size();
+
+        List<Employee> moreThanAverageSalary = new ArrayList<>();
+
+        for (Employee employee : listOfEmployees) {
+            if (employee.getSalary() > averageSalary_) {
+                moreThanAverageSalary.add(employee);
+            }
+        }
+    }
+
+
+    //Streamek segítségével írd ki minden dolgozó nevét, majd töröld ki a vezetéknevüket és írd ki a nevüket újra.
+
+    public static void feladat_8() {
+
+        listOfEmployees
+                .stream()
+                .peek(employee -> System.out.println(employee.getName()))
+                .map(employee -> employee.getName().split(" ")[0])
+                .forEach(System.out::println);
+
+
+    }
+
+    //Streamek segítségével keresd meg a leghosszabb nevű dolgozót.
+    public static void feladat_9() {
+
+        listOfEmployees
+                .stream()
+                .max(Comparator.comparingInt(emp -> emp.getName().length()))
+                .ifPresent(System.out::println);
+    }
+
+    //Streamek segítségével nézd meg, van-e olyan cég,
+    // ahol legalább 4-en dolgoznak. A stream térjen vissza egy boolean értékkel.
+    public static void feladat_10() {
+
+        boolean present = listOfEmployees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .anyMatch(organizationLongEntry -> organizationLongEntry.getValue() > 3);
+
+        present = listOfEmployees
+                .stream()
+                .collect(Collectors.groupingBy(Employee::getOrganization))
+                .entrySet()
+                .stream()
+                .anyMatch(organizationLongEntry -> organizationLongEntry.getValue().size() > 3);
+
+        System.out.println(present);
+    }
+
+
+
 }
