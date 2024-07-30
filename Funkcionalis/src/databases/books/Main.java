@@ -11,6 +11,10 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
+        List<Book> books = readModel();
+
+        Connection connection = Database.getConnection();
+        BookDao bookDao = new BookDao(connection);
 
 
     }
