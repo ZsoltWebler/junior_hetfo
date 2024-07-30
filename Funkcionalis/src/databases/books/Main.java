@@ -6,18 +6,31 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
 
-        List<Book> books = readModel();
 
         Connection connection = Database.getConnection();
         BookDao bookDao = new BookDao(connection);
 
 
+        bookDao.listOfGenres().forEach(System.out::println);
+        bookDao.listOfAuthors().forEach(System.out::println);
+        bookDao.findBooksByAuthor("Harper Lee").forEach(System.out::println);
+        bookDao.findBooksByTitle("The Secret").forEach(System.out::println);
+        bookDao.findBooksByGenre("Thriller").forEach(System.out::println);
+        System.out.println();
+
+        System.out.println(bookDao.authorsWithBookCount());
+
+        System.out.println(bookDao.findAllBooksGroupedByGenre());
+
     }
+
+
 
     private static List<Book> readModel() {
 
