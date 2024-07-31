@@ -6,9 +6,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +16,60 @@ public class Main {
 
         List<Order> orders = readModel();
 
+        System.out.println(leastOrderDay(orders));
+        System.out.println(getOrderByLocalDateTime(LocalDateTime.of(LocalDate.parse("2020-12-03"),LocalTime.parse("12:30")),orders));
+        //System.out.println(getOrderByLocalDateTime(LocalDateTime.of(LocalDate.parse("2024-12-03"),LocalTime.parse("12:30")),orders));
+
+        System.out.println(carrierStatistics(orders));
+        System.out.println(mostFavoredAddress(orders));
+
+
+        System.out.println();
+
+
+    }
+
+    private static Map<String,Long> carrierStatistics(List<Order> orders) {
+
+        return orders.stream()
+                .map(Order::getCarrier)
+                .collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+
+    }
+
+
+    private static Order getOrderByLocalDateTime(LocalDateTime localDateTime, List<Order> orders) {
+
+        return orders.stream()
+                .filter(order -> order.getLocalDateTime().equals(localDateTime))
+                .findFirst()
+                .orElseThrow();
+
+    }
+
+    private static LocalDate leastOrderDay(List<Order> orders) {
+
+        return orders.stream()
+                .map(order -> order.getLocalDateTime().toLocalDate())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .min(Comparator.comparingLong(Map.Entry::getValue))
+                .map(Map.Entry::getKey)
+                .orElseThrow();
+
+    }
+
+    private static String mostFavoredAddress(List<Order> orders) {
+
+        return orders.stream()
+                .map(Order::getAddress)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Comparator.comparingLong(Map.Entry::getValue))
+                .map(Map.Entry::getKey)
+                .orElseThrow();
 
     }
 
