@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -113,6 +114,85 @@ public class BookServiceTest {
 
         assertEquals(expectedBooks, actualBooks);
 
+    }
+
+    @Test
+    public void findBooksByTitleTest() {
+
+        List<Book> expectedBooks = List.of(new Book("978-1984801258", "Becoming", "Michelle Obama", "Autobiography", true));
+        List<Book> actualBooks = bookService.findBooksByTitle("Becoming");
+
+        assertEquals(expectedBooks, actualBooks);
+
+    }
+
+    @Test
+    public void findBooksByTitleAllBooksShouldBeFoundTest() {
+
+        List<Book> books = new ArrayList<>(bookList);
+        books.add(new Book("978-1984801256", "Becoming", "Michelle Obama", "Autobiography", false));
+        bookService = new BookService(books);
+
+        List<Book> expectedBooks = List.of(
+                new Book("978-1984801258", "Becoming", "Michelle Obama", "Autobiography", true),
+                new Book("978-1984801256", "Becoming", "Michelle Obama", "Autobiography", false)
+        );
+
+        List<Book> actualBooks = bookService.findBooksByTitle("Becoming");
+
+        assertEquals(expectedBooks, actualBooks);
+
+    }
+    @Test
+    public void mostPopularAuthorTest(){
+        List<Book> books = new ArrayList<>(bookList);
+        books.add(new Book("978-1984801256", "Becoming 2", "Michelle Obama", "Autobiography", false));
+        bookService = new BookService(books);
+
+        String expectedAuthor = "Michelle Obama";
+        String actualAuthor = bookService.mostPopularAuthor();
+
+        assertEquals(expectedAuthor, actualAuthor);
+    }
+
+    @Test
+    public void mostPopularAuthorShouldThrowExceptionTest(){
+        bookService = new BookService(List.of());
+
+        assertThrows(NoSuchElementException.class,() -> bookService.mostPopularAuthor());
+    }
+
+    @Test
+    public void  findAllBooksGroupedByGenreTest(){
+
+        Map<String, List<Book>> expectedBookMap = Map.of(
+                "Autobiography",List.of(
+                        new Book("978-1984801258", "Becoming", "Michelle Obama", "Autobiography", true)
+                ),
+                "Fiction",List.of(
+                        new Book("978-0141036137", "To Kill a Mockingbird", "Harper Lee", "Fiction", true),
+                        new Book("978-0061120084", "The Catcher in the Rye", "J.D. Salinger", "Fiction", false)
+                ));
+
+        Map<String, List<Book>> actualBookMap = bookService.findAllBooksGroupedByGenre();
+
+        assertEquals(expectedBookMap, actualBookMap);
+
+    }
+
+    @Test
+    public void  authorsWithBookCount(){
+
+        Map<String, Long> expectedBookMap = Map.of(
+                "Harper Lee", 1L,
+                "J.D. Salinger", 1L,
+                "Michelle Obama", 1L
+        );
+
+
+        Map<String, Long> actualBookMap = bookService.authorsWithBookCount();
+
+        assertEquals(expectedBookMap, actualBookMap);
     }
 
 
