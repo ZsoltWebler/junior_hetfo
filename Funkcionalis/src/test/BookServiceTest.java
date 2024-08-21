@@ -64,5 +64,56 @@ public class BookServiceTest {
 
     }
 
+    @Test
+    public void listOfAuthorsTest() {
+        List<String> expectedAuthors = List.of("Harper Lee", "Michelle Obama", "J.D. Salinger");
+        List<String> actualAuthors = bookService.listOfAuthors();
+
+        assertEquals(expectedAuthors, actualAuthors);
+
+    }
+
+    @Test
+    public void listOfAuthorsShouldBeDistinctTest() {
+
+        List<Book> books = new ArrayList<>(bookList);
+        books.addAll(bookList);
+        bookService = new BookService(books);
+
+        List<String> expectedAuthors = List.of("Harper Lee", "Michelle Obama", "J.D. Salinger");
+        List<String> actualAuthors = bookService.listOfAuthors();
+
+        assertEquals(expectedAuthors, actualAuthors);
+
+    }
+
+    @Test
+    public void findBooksByAuthorTest() {
+
+        List<Book> expectedBooks = List.of(new Book("978-1984801258", "Becoming", "Michelle Obama", "Autobiography", true));
+        List<Book> actualBooks = bookService.findBooksByAuthor("Michelle Obama");
+
+        assertEquals(expectedBooks, actualBooks);
+
+    }
+
+    @Test
+    public void findBooksByAuthorAllBooksShouldBeFoundTest() {
+
+        List<Book> books = new ArrayList<>(bookList);
+        books.add(new Book("978-1984801256", "Becoming 2", "Michelle Obama", "Autobiography", false));
+        bookService = new BookService(books);
+
+        List<Book> expectedBooks = List.of(
+                new Book("978-1984801258", "Becoming", "Michelle Obama", "Autobiography", true),
+                new Book("978-1984801256", "Becoming 2", "Michelle Obama", "Autobiography", false)
+        );
+
+        List<Book> actualBooks = bookService.findBooksByAuthor("Michelle Obama");
+
+        assertEquals(expectedBooks, actualBooks);
+
+    }
+
 
 }

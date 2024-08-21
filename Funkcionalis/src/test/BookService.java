@@ -23,4 +23,19 @@ public class BookService {
                 .distinct()
                 .toList();
     }
+
+    public List<String> listOfAuthors(){
+        return books.stream()
+                .map(Book::getAuthor)
+                .distinct()
+                .toList();
+    }
+
+    public List<Book> findBooksByAuthor(String author){
+
+        return books.stream()
+                .filter(book -> book.getAuthor().equals(author))
+                .toList();
+
+    }
 }
