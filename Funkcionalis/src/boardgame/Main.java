@@ -3,6 +3,7 @@ package boardgame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -21,15 +22,22 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("4. feladat");
         System.out.print("Adja meg az ösvény sorszámát! ");
         int selectedRoute = scanner.nextInt();
         System.out.print("Adja meg a játékosok számát! ");
         int numberOfPlayers = scanner.nextInt();
 
 
+        Map<String, Long> routeStatistics = routeStatistics(routes.get(selectedRoute - 1));
+        System.out.println("5. feladat");
+        System.out.println("M: "+ routeStatistics.get("M")+" darab");
+        System.out.println("V: "+ routeStatistics.get("V")+" darab");
+        System.out.println("E: "+ routeStatistics.get("E")+" darab");
+
     }
 
-    private static List<String> readLines(File file) {
+    public static List<String> readLines(File file) {
         List<String> lines = new ArrayList<>();
 
         try {
@@ -47,7 +55,7 @@ public class Main {
     }
 
 
-    private static int longestRoute(List<String> routes) {
+    public static int longestRoute(List<String> routes) {
 
         return IntStream
                 .range(0, routes.size())
@@ -59,4 +67,9 @@ public class Main {
 
     }
 
+
+    public static Map<String, Long> routeStatistics (String route){
+
+        return Arrays.stream(route.split("")).collect(Collectors.groupingBy(o -> o, Collectors.counting()));
+    }
 }
