@@ -8,13 +8,15 @@ import java_io.PeopleReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PeopleReaderTest {
 
-    private final String filePath = "W:\\Webler\\JuniorJava\\Git\\java\\Final\\src\\test_exam_2\\java_io\\people.csv";
+    private final String filePath = "src/java_io/people.csv";
     List<People> peopleList = PeopleReader.readPeoplesFromCsv(new File(filePath));
 
     public PeopleReaderTest() throws FileNotFoundException {
@@ -47,7 +49,10 @@ public class PeopleReaderTest {
 
     @Test
     public void peopleReadTest_5() {
-        //TODO
-        fail();
+        Map<Gender, List<People>> collect = peopleList.stream().collect(Collectors.groupingBy(People::getGender));
+
+        assertEquals(545,collect.get(Gender.MALE).size());
+        assertEquals(455,collect.get(Gender.FEMALE).size());
+
     }
 }

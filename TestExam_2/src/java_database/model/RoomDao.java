@@ -61,7 +61,9 @@ public class RoomDao {
     }
 
     public double getOnSalePrice() {
-        return getPrice();
+
+        return onSale ? getPrice() * 0.9 : getPrice();
+
     }
 
     @Override

@@ -104,12 +104,13 @@ public class Hotel extends JFrame {
 
     private void openAddRoomDialog() {
 
-        //TODO
+       new AddRoomDialog(this).setVisible(true);
     }
 
     public void addRoom(RoomDao roomDao) {
 
-        //TODO
+        repository.save(roomDao);
+        refreshTable();
 
     }
 

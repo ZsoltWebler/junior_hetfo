@@ -2,6 +2,8 @@ package java_collections;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ComputerStorageSystem {
 
@@ -21,27 +23,27 @@ public class ComputerStorageSystem {
     }
 
     public final List<Computer> getAllComputersWithGeForceGPU() {
-        return computerList.stream().filter(computer -> computer.getCPU().startsWith("GeForce")).toList();
+        return computerList.stream().filter(computer -> computer.getGPU().startsWith("GeForce")).toList();
     }
 
     public final List<Computer> getAllComputersWithRadeonGPU() {
-        return computerList.stream().filter(computer -> computer.getGPU().startsWith("Radon")).toList();
+        return computerList.stream().filter(computer -> computer.getGPU().startsWith("Radeon")).toList();
     }
 
     public final List<Computer> getAllComputersWithMoreThan16GBRam() {
-        return computerList.stream().filter(computer -> computer.getRamCapacity() >= 16).toList();
+        return computerList.stream().filter(computer -> computer.getRamCapacity() > 16).toList();
     }
 
-    public final HashMap<StorageType, Computer> getAllComputersGroupedByStorageType() {
-        throw new UnsupportedOperationException();
+    public final Map<StorageType, List<Computer>> getAllComputersGroupedByStorageType() {
+        return computerList.stream().collect(Collectors.groupingBy(Computer::getStorageType));
     }
 
-    public final HashMap<Integer, Computer> getAllComputersGroupedByMemoryCapacity() {
-        throw new UnsupportedOperationException();
+    public final Map<Integer, List<Computer>> getAllComputersGroupedByMemoryCapacity() {
+        return computerList.stream().collect(Collectors.groupingBy(Computer::getRamCapacity));
     }
 
-    public final HashMap<Integer, Computer> getAllComputersGroupedByStorageCapacity() {
-        throw new UnsupportedOperationException();
+    public final Map<Integer, List<Computer>> getAllComputersGroupedByStorageCapacity() {
+        return computerList.stream().collect(Collectors.groupingBy(Computer::getStorageCapacity));
     }
 
 

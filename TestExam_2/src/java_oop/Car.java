@@ -9,7 +9,7 @@ public class Car {
     private final boolean isAvailable;
 
     public Car(String identifier, String manufacturer, String model, double price, boolean isAvailable) {
-        this.identifier = identifier;
+        this.identifier = (identifier.toUpperCase() + "0000000000").substring(0, 10);
         this.manufacturer = manufacturer;
         this.model = model;
         this.price = price;
@@ -33,11 +33,11 @@ public class Car {
     }
 
     public boolean isAvailable() {
-        return false;
+        return isAvailable;
     }
 
     public double getNetPrice(Vat vat) {
-        return getPrice() * vat.VAT_RATE;
+        return getPrice() + (getPrice() * vat.VAT_RATE) / 100;
     }
 
 }
