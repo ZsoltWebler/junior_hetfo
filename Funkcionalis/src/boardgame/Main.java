@@ -37,7 +37,7 @@ public class Main {
         Map<Integer, Character> specialFields = specialFields(routes.get(selectedRoute - 1));
         writeSpecialFieldsToFile(new File("src/boardgame/kulonleges.txt"), specialFields);
 
-        getWinnerEasy(routes.get(selectedRoute - 1), rolls, numberOfPlayers);
+        getWinner(routes.get(selectedRoute - 1), rolls, numberOfPlayers);
 
     }
 
@@ -144,5 +144,62 @@ public class Main {
             round++;
 
         }
+    }
+    public static void getWinner(String route, List<Integer> rolls, int numberOfPlayers) {
+        int goalIndex = route.length();
+
+        Map<Integer, Integer> players = new HashMap<>();
+
+        for (int currentPlayer = 1; currentPlayer <= numberOfPlayers; currentPlayer++) {
+            players.put(currentPlayer, 0);
+        }
+
+
+        int rollIndex = 0;
+        int round = 1;
+        boolean someWon = false;
+
+        while (rollIndex<rolls.size()) {
+            for (Map.Entry<Integer, Integer> player : players.entrySet()) {
+
+                Integer playerCurrentPosition = players.get(player.getKey());
+                Integer rolledNumber = rolls.get(rollIndex);
+
+                int newPosition = playerCurrentPosition + rolledNumber;
+
+
+                if(newPosition >= goalIndex){
+                    players.put(player.getKey(), newPosition);
+                    someWon = true;
+                    continue;
+                }
+
+                switch (route.charAt(newPosition-1)){
+                    case 'M':
+                        break;
+                    case 'E':
+                        newPosition += rolledNumber;
+                        break;
+                    case 'V':
+                        newPosition -= rolledNumber;
+                }
+
+                players.put(player.getKey(), newPosition);
+                rollIndex++;
+            }
+            if(!someWon){
+                round++;
+            }else {
+                break;
+            }
+
+
+        }
+
+        System.out.println("Nyertes(ek): "+players.entrySet().stream().filter(integerIntegerEntry -> integerIntegerEntry.getValue()>=route.length()).map(Map.Entry::getKey).toList());
+        System.out.println("Többiek pozíciója: ");
+        players.entrySet().stream().filter(integerIntegerEntry -> integerIntegerEntry.getValue()<route.length()).forEach(integerIntegerEntry -> {
+            System.out.println(integerIntegerEntry.getKey()+". játékos, "+integerIntegerEntry.getValue() +" mező." );
+        });
     }
 }
