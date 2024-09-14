@@ -32,6 +32,14 @@ public class Color {
         return blue;
     }
 
+    public boolean isBright() {
+        return (red + green + blue) > 600;
+    }
+
+    public int getIntensity() {
+        return red + green + blue;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,10 +55,9 @@ public class Color {
 
     @Override
     public String toString() {
-        return "Color{" +
-                "red=" + red +
-                ", green=" + green +
-                ", blue=" + blue +
-                '}';
+        return "RGB(" + red +
+                ", " + green +
+                ", " + blue +
+                ')';
     }
 }
