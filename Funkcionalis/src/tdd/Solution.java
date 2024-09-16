@@ -78,4 +78,8 @@ class Solution {
         return arraySize % 2 == 0 ? (previousIndexNumber + currentIndexNumber) / 2.0 : currentIndexNumber;
     }
 
+    public int hIndex(int[] citations) {
+
+    }
+
 }
