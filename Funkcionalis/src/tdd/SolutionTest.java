@@ -103,7 +103,7 @@ public class SolutionTest {
     @Test
     public void findMedianSortedArraysTest_4() {
         //Given
-        int[] testArray_1 = new int[]{1,2,3};
+        int[] testArray_1 = new int[]{1, 2, 3};
         int[] testArray_2 = new int[]{};
 
         //When
@@ -117,7 +117,7 @@ public class SolutionTest {
     public void findMedianSortedArraysTest_5() {
         //Given
         int[] testArray_1 = new int[]{};
-        int[] testArray_2 = new int[]{1,2,3};
+        int[] testArray_2 = new int[]{1, 2, 3};
 
         //When
         double actualValue = new Solution().findMedianSortedArrays(testArray_1, testArray_2);
@@ -129,8 +129,8 @@ public class SolutionTest {
     @Test
     public void findMedianSortedArraysTest_6() {
         //Given
-        int[] testArray_1 = new int[]{1,2,3,4};
-        int[] testArray_2 = new int[]{2,4,6};
+        int[] testArray_1 = new int[]{1, 2, 3, 4};
+        int[] testArray_2 = new int[]{2, 4, 6};
 
         //When
         double actualValue = new Solution().findMedianSortedArrays(testArray_1, testArray_2);
@@ -147,7 +147,7 @@ public class SolutionTest {
         Random random = new Random();
 
 
-        for( int i = 0; i < sizeOfArray ; i++){
+        for (int i = 0; i < sizeOfArray; i++) {
             testArray_1[i] = random.nextInt();
             testArray_2[i] = random.nextInt();
         }
@@ -161,6 +161,46 @@ public class SolutionTest {
         long elapsedTime = System.currentTimeMillis() - startTime;
 
         System.out.println(elapsedTime + " ms");
+    }
+
+    @Test
+    public void hIndexTest_1() {
+
+        int[] citations = new int[]{3, 0, 6, 1, 5};
+
+        int actual = new Solution().hIndex(citations);
+
+        assertEquals(3, actual);
+    }
+
+    @Test
+    public void hIndexTest_2() {
+
+        int[] citations = new int[]{1,3,1};
+
+        int actual = new Solution().hIndex(citations);
+
+        assertEquals(1, actual);
+    }
+
+    @Test
+    public void hIndexTest_3() {
+
+        int[] citations = new int[]{0,0,0};
+
+        int actual = new Solution().hIndex(citations);
+
+        assertEquals(0, actual);
+    }
+
+    @Test
+    public void hIndexTest_4() {
+
+        int[] citations = new int[]{3,3,3};
+
+        int actual = new Solution().hIndex(citations);
+
+        assertEquals(3, actual);
     }
 
 

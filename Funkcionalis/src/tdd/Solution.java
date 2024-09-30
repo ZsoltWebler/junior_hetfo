@@ -80,6 +80,31 @@ class Solution {
 
     public int hIndex(int[] citations) {
 
+
+        int hIndex = 0;
+
+        while (true) {
+
+            int numberOfArticlesWithAtLeastNCitation = 0;
+
+            for (int i = 0; i < citations.length; i++) {
+
+                if (hIndex <= citations[i]) {
+                    numberOfArticlesWithAtLeastNCitation++;
+                }
+
+            }
+
+            if (numberOfArticlesWithAtLeastNCitation < hIndex) {
+                return hIndex-1;
+            } else if (numberOfArticlesWithAtLeastNCitation == hIndex) {
+                return hIndex;
+            }
+
+            hIndex++;
+        }
+
+
     }
 
 }
