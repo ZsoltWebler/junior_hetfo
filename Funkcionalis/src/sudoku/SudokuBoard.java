@@ -2,6 +2,7 @@ package sudoku;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SudokuBoard {
 
@@ -19,13 +20,21 @@ public class SudokuBoard {
         fields.get(row + 1).set(column + 1, value);
     }
 
+    public int getSubBoard(int row, int column){
+        //TODO
+    }
+
     public List<List<Integer>> getFields() {
         return fields;
     }
 
+
     @Override
     public String toString() {
-        return super.toString(); // TODO házi olyan toString mi mutatja a táblázatot
+        return fields.stream().map(row -> row.stream()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining(" ")))
+                .collect(Collectors.joining("\n"));
     }
 
     @Override
