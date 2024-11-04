@@ -24,6 +24,7 @@ public class DummyController {
                         BigDecimal.valueOf(100000),
                         LocalDate.now(),
                         new Category(
+                                1L,
                                 "Rezsi",
                                 "",
                                 Collections.emptyList(),
@@ -37,6 +38,7 @@ public class DummyController {
     public List<Category> testCategory() {
         return List.of(
                 new Category(
+                        1L,
                         "Rezsi",
                         "",
                         List.of(
@@ -60,6 +62,7 @@ public class DummyController {
                         10,
                         2024,
                         new Category(
+                                1L,
                                 "Rezsi",
                                 "",
                                 List.of(

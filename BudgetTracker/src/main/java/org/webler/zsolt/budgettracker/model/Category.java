@@ -12,16 +12,23 @@ import java.util.List;
 @NoArgsConstructor
 public class Category {
 
+    private long Id;
     private String name;
     private String description;
     private List<Expense> expenses;
     private List<Budget> budgets;
 
-    public Category(String name, String description){
+
+    public Category(long id, String name, String description) {
+        this.Id = id;
         this.name = name;
         this.description = description;
         this.expenses = new ArrayList<>();
         this.budgets = new ArrayList<>();
+    }
+
+    public Category(String name, String description) {
+        this(0L, name, description);
     }
 
 }
