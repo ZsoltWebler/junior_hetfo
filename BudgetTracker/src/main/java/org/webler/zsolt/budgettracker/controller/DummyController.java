@@ -15,10 +15,11 @@ import java.util.List;
 public class DummyController {
 
 
-    @GetMapping("/expenses")
+    @GetMapping("/expensessss")
     public List<Expense> testExpenses() {
         return List.of(
                 new Expense(
+                        1L,
                         "Lakbér",
                         BigDecimal.valueOf(100000),
                         LocalDate.now(),
@@ -39,7 +40,9 @@ public class DummyController {
                         "Rezsi",
                         "",
                         List.of(
+
                                 new Expense(
+                                        1L,
                                         "Lakbér",
                                         BigDecimal.valueOf(100000),
                                         LocalDate.now(),
@@ -61,6 +64,7 @@ public class DummyController {
                                 "",
                                 List.of(
                                         new Expense(
+                                                1L,
                                                 "Lakbér",
                                                 BigDecimal.valueOf(100000),
                                                 LocalDate.now(),

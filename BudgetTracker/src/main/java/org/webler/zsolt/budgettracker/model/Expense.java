@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Expense {
 
-
+    private Long id;
     private String description;
     private BigDecimal amount;
     private LocalDate date;
