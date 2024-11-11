@@ -21,7 +21,7 @@ public class Category {
     private String name;
     private String description;
 
-    @Transient
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Expense> expenses;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Budget> budgets;

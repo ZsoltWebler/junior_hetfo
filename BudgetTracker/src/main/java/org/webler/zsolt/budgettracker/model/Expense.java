@@ -23,6 +23,8 @@ public class Expense {
     private BigDecimal amount;
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id",nullable = false)
     private Category category;
 
     public Long getId() {
