@@ -1,5 +1,6 @@
 package org.webler.zsolt.budgettracker.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,17 +11,26 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    private long Id;
     private String name;
     private String description;
+
+    @Transient
     private List<Expense> expenses;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Budget> budgets;
 
 
+
+
     public Category(long id, String name, String description) {
-        this.Id = id;
+        this.id = id;
         this.name = name;
         this.description = description;
         this.expenses = new ArrayList<>();
