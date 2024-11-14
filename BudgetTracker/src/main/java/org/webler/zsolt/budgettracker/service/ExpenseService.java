@@ -1,63 +1,55 @@
 package org.webler.zsolt.budgettracker.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.webler.zsolt.budgettracker.model.Category;
 import org.webler.zsolt.budgettracker.model.Expense;
+import org.webler.zsolt.budgettracker.repository.ExpenseRepository;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ExpenseService {
 
 
-    private final Category foodCategory = new Category("Food", "You are what you eat!");
-    private final Category commuteCategory = new Category("Commute", "Petrol prices are skyrocketed!");
+    private ExpenseRepository expenseRepository;
 
-    private final List<Expense> expenseList = new ArrayList<>(
-            List.of(
-                    new Expense(1L, "Vacsora", BigDecimal.valueOf(25000), LocalDate.now(), foodCategory),
-                    new Expense(2L, "Étel rendelés", BigDecimal.valueOf(18000), LocalDate.now(), foodCategory),
-                    new Expense(3L, "Bevásárlás", BigDecimal.valueOf(32000), LocalDate.now(), foodCategory),
-                    new Expense(4L, "Bérlet", BigDecimal.valueOf(25000), LocalDate.now(), commuteCategory),
-                    new Expense(5L, "Vonaljegy", BigDecimal.valueOf(400), LocalDate.now(), commuteCategory)
-            ));
+    @Autowired
+    public ExpenseService(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
+    }
 
 
     public List<Expense> getAllExpenses() {
-        return expenseList;
+        return expenseRepository.findAll();
     }
 
 
     public Expense getExpenseById(Long id) {
-        return expenseList.stream().filter(expense -> expense.getId() == id).findFirst().orElseThrow();
+        return expenseRepository.findById(id).orElseThrow();
     }
 
     public Expense save(Expense expense) {
-        expenseList.add(expense);
-        return expense;
+        return expenseRepository.save(expense);
     }
 
     public void deleteExpenses() {
-        expenseList.clear();
+        expenseRepository.deleteAll();
     }
 
     public void deleteExpenseById(Long id) {
-        Expense expenseById = getExpenseById(id);
-        expenseList.remove(expenseById);
+        expenseRepository.deleteById(id);
     }
 
     public Expense updateExpenseById(Long id, Expense expense) {
 
-        Expense expenseById = getExpenseById(id);
+        Expense expenseById = expenseRepository.findById(id).orElseThrow();
 
         expenseById.setAmount(expense.getAmount());
         expenseById.setDate(expense.getDate());
         expenseById.setCategory(expense.getCategory());
         expenseById.setDescription(expense.getDescription());
 
+        expenseRepository.saveAndFlush(expenseById);
         return expenseById;
 
     }
