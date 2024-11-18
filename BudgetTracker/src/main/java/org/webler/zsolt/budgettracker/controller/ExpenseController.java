@@ -3,6 +3,7 @@ package org.webler.zsolt.budgettracker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.webler.zsolt.budgettracker.model.Category;
 import org.webler.zsolt.budgettracker.model.Expense;
 import org.webler.zsolt.budgettracker.service.ExpenseService;
 
@@ -31,7 +32,9 @@ public class ExpenseController {
 
     @PostMapping
     public Expense save(@RequestBody Expense expense) {
-        return expenseService.save(expense);
+
+        Expense save = expenseService.save(expense);
+        return save;
     }
 
     @DeleteMapping
@@ -47,6 +50,11 @@ public class ExpenseController {
     @PatchMapping("/{id}")
     public Expense updateExpenseById(@PathVariable Long id, @RequestBody Expense expense) {
         return expenseService.updateExpenseById(id, expense);
+    }
+
+    @PatchMapping("/{id}/category")
+    public Expense updateExpenseById(@PathVariable Long id, @RequestBody Category category) {
+        return expenseService.updateCategoryForExpense(id, category);
     }
 
 

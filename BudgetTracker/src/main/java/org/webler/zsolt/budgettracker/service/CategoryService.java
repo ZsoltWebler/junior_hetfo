@@ -1,52 +1,51 @@
 package org.webler.zsolt.budgettracker.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webler.zsolt.budgettracker.model.Category;
+import org.webler.zsolt.budgettracker.repository.CategoryRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CategoryService {
 
-    private final List<Category> categoryList = new ArrayList<>(
-            List.of(
-                    new Category(1L, "Food", "You are what you eat!"),
-                    new Category(2L, "Commute", "Petrol prices are skyrocketed!")
-            )
-    );
+    private  CategoryRepository categoryRepository;
+
+    @Autowired
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
 
     public List<Category> getAllCategories() {
-        return categoryList;
+        return categoryRepository.findAll();
     }
 
     public Category getCategoryById(Long id) {
-        return categoryList.stream().filter(category -> category.getId() == id).findFirst().orElseThrow();
+        return categoryRepository.findById(id).orElseThrow();
     }
 
     public Category save(Category category) {
-        categoryList.add(category);
-        return category;
+        return categoryRepository.save(category);
     }
 
     public void deleteCategories() {
-        categoryList.clear();
+        categoryRepository.deleteAll();
     }
 
     public void deleteCategoryById(Long id) {
-        Category categoryById = getCategoryById(id);
-        categoryList.remove(categoryById);
+        categoryRepository.deleteById(id);
     }
 
     public Category updateCategoryById(Long id, Category category) {
-        Category categoryById = getCategoryById(id);
+        Category categoryById = categoryRepository.findById(id).orElseThrow();
 
         categoryById.setName(category.getName());
         categoryById.setDescription(category.getDescription());
         categoryById.setExpenses(category.getExpenses());
         categoryById.setBudgets(category.getBudgets());
 
-        return categoryById;
+        return categoryRepository.save(categoryById);
     }
 }

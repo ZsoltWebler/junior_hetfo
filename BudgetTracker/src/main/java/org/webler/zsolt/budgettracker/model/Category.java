@@ -1,17 +1,20 @@
 package org.webler.zsolt.budgettracker.model;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,7 @@ public class Category {
     private String name;
     private String description;
 
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Expense> expenses;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -28,6 +32,10 @@ public class Category {
 
 
 
+    public Category(){
+        this.expenses = new ArrayList<>();
+        this.budgets = new ArrayList<>();
+    }
 
     public Category(long id, String name, String description) {
         this.id = id;
@@ -39,6 +47,16 @@ public class Category {
 
     public Category(String name, String description) {
         this(0L, name, description);
+    }
+
+
+    public boolean addExpense(Expense expense){
+
+        return expenses.add(expense);
+    }
+
+    public boolean addBudget(Budget budget){
+        return budgets.add(budget);
     }
 
 }

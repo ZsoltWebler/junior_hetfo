@@ -2,9 +2,12 @@ package org.webler.zsolt.budgettracker.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webler.zsolt.budgettracker.model.Category;
 import org.webler.zsolt.budgettracker.model.Expense;
+import org.webler.zsolt.budgettracker.repository.CategoryRepository;
 import org.webler.zsolt.budgettracker.repository.ExpenseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -12,10 +15,12 @@ public class ExpenseService {
 
 
     private ExpenseRepository expenseRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public ExpenseService(ExpenseRepository expenseRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, CategoryRepository categoryRepository) {
         this.expenseRepository = expenseRepository;
+        this.categoryRepository = categoryRepository;
     }
 
 
@@ -55,4 +60,14 @@ public class ExpenseService {
     }
 
 
+    public Expense updateCategoryForExpense(Long id, Category category) {
+        Expense expenseById = expenseRepository.findById(id).orElseThrow();
+
+
+        category.addExpense(expenseById);
+        categoryRepository.saveAndFlush(category);
+
+        expenseById.setCategory(category);
+        return expenseRepository.saveAndFlush(expenseById);
+    }
 }
