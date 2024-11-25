@@ -15,7 +15,7 @@ public class GameShop {
 
     public List<Developer> listOfDistinctDevelopers() {
 
-        return games.stream().map(Game::getDeveloper).toList();
+        return games.stream().map(Game::getDeveloper).distinct().toList();
 
     }
 
@@ -23,7 +23,7 @@ public class GameShop {
         return games.stream()
                 .collect(Collectors.groupingBy(Game::getDeveloper))
                 .entrySet().stream()
-                .max(Comparator.comparingInt(o -> o.getValue().hashCode()))
+                .max(Comparator.comparingInt(o -> o.getValue().size()))
                 .orElseThrow()
                 .getKey();
     }
@@ -39,6 +39,21 @@ public class GameShop {
     }
 
     public Game minPriceGame() {
+        //Todo
+        throw new UnsupportedOperationException();
+    }
+
+    public Map<Genre, List<Game>> gamesByGenre() {
+        //Todo
+        throw new UnsupportedOperationException();
+    }
+
+    public double averagePriceOfGames() {
+        //Todo
+        throw new UnsupportedOperationException();
+    }
+
+    public Game mostReviewedGame() {
         //Todo
         throw new UnsupportedOperationException();
     }
