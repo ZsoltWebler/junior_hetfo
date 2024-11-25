@@ -27,12 +27,11 @@ public class Employee {
     }
 
     public void setPerformance(int performance) {
-        this.performance = Math.min(1, Math.max(10, performance));
+        this.performance = Math.max(1, Math.min(10, performance));
     }
 
     public int recommendedSalaryRaise() {
-        //todo
-        throw new UnsupportedOperationException();
+        return (int) Math.round(getSalary()*Math.pow((1+(getPerformance()/100.0)),LocalDate.now().getYear()-lastSalaryRaise));
     }
 
     public String getFirstName() {

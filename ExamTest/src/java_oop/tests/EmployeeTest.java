@@ -1,7 +1,7 @@
 package java_oop.tests;
 
-import org.junit.jupiter.api.Test;
 import java_oop.Employee;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
@@ -40,6 +40,28 @@ public class EmployeeTest {
         int expected = LocalDate.now().getYear();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void recommendedSalaryRaiseTest() {
+        int lastSalaryRaise = LocalDate.now().getYear() - 4;
+        Employee employee = new Employee("John", "Doe", 2000, lastSalaryRaise, 6, 10000);
+
+        int actual = employee.recommendedSalaryRaise();
+        int expected = 12625;
+
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    public void recommendedSalaryRaiseTest2() {
+        int lastSalaryRaise = LocalDate.now().getYear() - 5;
+        Employee employee = new Employee("John", "Doe", 2000, lastSalaryRaise, 6, 20000);
+
+        int actual = employee.recommendedSalaryRaise();
+        int expected = 26765;
+
+        assertEquals(expected,actual);
     }
 
 
