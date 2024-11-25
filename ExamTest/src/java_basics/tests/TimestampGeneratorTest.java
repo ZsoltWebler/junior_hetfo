@@ -18,8 +18,21 @@ public class TimestampGeneratorTest {
     }
 
     @Test
+    public void testGenerateTimeStampSecondAccuracyHappyPath() {
+        String actual = TimestampGenerator.generateTimeStampDayAccuracy(2000, 11, 27,12,11);
+        String expected = "200011271211";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void testGenerateTimeStampShouldThrowException() {
         assertThrows(IllegalArgumentException.class, () -> TimestampGenerator.generateTimeStampDayAccuracy(2000, 13, 27));
+    }
+
+    @Test
+    public void testGenerateTimeStampSecondAccuracyShouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> TimestampGenerator.generateTimeStampDayAccuracy(2000, 12, 27,61,30));
     }
 
 
