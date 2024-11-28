@@ -1,22 +1,23 @@
 package java_io.tests;
 
-import org.junit.jupiter.api.Test;
 import java_io.Car;
 import java_io.CarReader;
 import java_io.FuelType;
 import java_io.Transmission;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CarReaderTest {
 
-    private final String filePath = "W:\\Webler\\JuniorJava\\Git\\java\\Final\\src\\test_exam_4\\java_io\\cars.csv";
+    private final String filePath = "src/java_io/cars.csv";
     List<Car> cars = CarReader.readCarsFromCSV(new File(filePath));
 
     public CarReaderTest() throws FileNotFoundException {
@@ -44,19 +45,36 @@ public class CarReaderTest {
 
     @Test
     public void carReaderTest_4() {
-        //todo
-        fail();
+
+        long expected = 504127;
+
+        long actual = Math.round(cars.stream().mapToDouble(Car::getPrice).average().orElseThrow());
+
+        assertEquals(actual, expected);
+
+
     }
 
     @Test
     public void carReaderTest_5() {
-        //todo
-        fail();
+
+        Map<FuelType, List<Car>> carsByFuelType = cars.stream().collect(Collectors.groupingBy(Car::getFuelType));
+        assertEquals(2123, carsByFuelType.get(FuelType.PETROL).size());
+        assertEquals(2153, carsByFuelType.get(FuelType.DIESEL).size());
+        assertEquals(40, carsByFuelType.get(FuelType.CNG).size());
+        assertEquals(23, carsByFuelType.get(FuelType.LPG).size());
+        assertEquals(1, carsByFuelType.get(FuelType.ELECTRIC).size());
+
     }
 
     @Test
     public void carReaderTest_6() {
-        //todo
-        fail();
+        int newestCar = 2020;
+        int oldestCar = 1992;
+
+        IntSummaryStatistics intSummaryStatistics = cars.stream().mapToInt(Car::getYear).summaryStatistics();
+
+        assertEquals(newestCar, intSummaryStatistics.getMax());
+        assertEquals(oldestCar, intSummaryStatistics.getMin());
     }
 }

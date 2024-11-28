@@ -6,5 +6,24 @@ public enum FuelType {
     CNG,
     LPG,
     ELECTRIC,
-    UNKNOWN
+    UNKNOWN;
+
+    public static FuelType of(String fuelTypeString) {
+
+        switch (fuelTypeString.toUpperCase()) {
+            case "PETROL":
+                return PETROL;
+            case "DIESEL":
+                return DIESEL;
+            case "CNG":
+                return CNG;
+            case "LPG":
+                return LPG;
+            case "ELECTRIC":
+                return ELECTRIC;
+            default:
+                return UNKNOWN;
+        }
+
+    }
 }
