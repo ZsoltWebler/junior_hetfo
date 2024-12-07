@@ -69,6 +69,10 @@ public class MeteorologyReportAnalyzer {
                 .mapToInt(MeteorologyReport::getTemperature)
                 .summaryStatistics();
 
+        if (temperatureStatistics.getCount() < 1) {
+            throw new NoSuchElementException();
+        }
+
         return temperatureStatistics.getMax() - temperatureStatistics.getMin();
 
     }
@@ -91,15 +95,14 @@ public class MeteorologyReportAnalyzer {
 
     }
 
-    public Map<String,List<RecordTimeAndWindStrengthAsString>> reportsByCities(){
+    public Map<String, List<RecordTimeAndWindStrengthAsString>> reportsByCities() {
 
         return meteorologyReports.stream()
                 .collect(Collectors.groupingBy(
                         MeteorologyReport::getCityCode,
                         Collectors.mapping(
-                                meteorologyReport -> new RecordTimeAndWindStrengthAsString(meteorologyReport.getReportTime(),meteorologyReport.getWindStrength()),
+                                meteorologyReport -> new RecordTimeAndWindStrengthAsString(meteorologyReport.getReportTime(), meteorologyReport.getWindStrength()),
                                 Collectors.toList())));
-
 
 
     }
